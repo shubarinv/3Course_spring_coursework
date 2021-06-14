@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    {% if client %}
+        <h3>ID: {{ client.id }}</h3>
+        <h3>Наименование: {{ client.name }}</h3>
+        <h3>Имя: {{ client.first_name }}</h3>
+        <h3>Фамилия: {{ client.second_name }}</h3>
+        <h3>Отчество: {{ client.third_name }}</h3>
+        <h3>Адрес: {{ client.address }}</h3>
+        <h3>Телефон: {{ client.phone }}</h3>
+        <h3>ИНН: {{ client.tin }}</h3>
+        <h3>Заметки: {{ client.notes }}</h3>
+    {% else %}
+        <h3>Данные по клиенту завезены не были</h3>
+    {% endif %}
+{% endblock %}

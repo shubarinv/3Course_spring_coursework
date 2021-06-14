@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if clients %}
+<h1>Clients</h1>
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+
+    {% for client in clients %}
+    <tr>
+        <th>{{client.id}}</th>
+        {% if client.name == '-' %}
+        <td>
+            {{client.second_name}} {{client.first_name}} {{client.third_name}}
+        </td>
+        {% else %}
+        <td>
+            {{client.name}}
+        </td>
+        {% endif %}
+        <td>
+            <a href="/client/{{ client.id }}">View</a>
+        </td>
+        <td>
+            <a href="/edit/client/{{ client.id }}">Edit</a>
+        </td>
+        <td>
+            <a href="/remove/client/{{ client.id }}">Remove</a>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<h2>No Clients :( </h2>
+{% endif %}
+{% endblock %}
