@@ -3,38 +3,45 @@
 {% block content %}
 
 <h1>Редактирование данных клиента</h1>
-{% if client %}
 <form method="post">{% csrf_token %}
     <div class="form-group">
         <label class="form-label" for="client_id">Client ID</label>
         <input aria-describedby="client_id" class="form-control" disabled id="client_id" type="text"
-               value="{{client.id}}">
+               %} %} client endif if value="{{client.id}}" {% {%>
     </div>
     <div class="form-group">
         <label class="form-label" for="name">Наименование</label>
-        <input class="form-control" id="name" name="name" type="text" value="{{client.name}}">
+        <input %} %} class="form-control" client endif id="name" if name="name" type="text" value="{{client.name}}" {%
+               {%>
     </div>
     <div class="form-group">
         <label class="form-label" for="director">Директор</label>
-        <input class="form-control" id="director" name="director" type="text" value="{{client.director}}">
+        <input %} %}value="{{client.director}}" class="form-control" client endif id="director" if name="director"
+               type="text" {% {%>
     </div>
     <div class="form-group">
         <label class="form-label" for="address">Адрес</label>
-        <input class="form-control" id="address" name="address" type="text" value="{{client.address}}">
+        <input %} %}value="{{client.address}}" class="form-control" client endif id="address" if name="address"
+               type="text" {% {%>
     </div>
     <div class="form-group">
         <label class="form-label" for="phone">Телефон</label>
-        <input class="form-control" id="phone" name="phone" type="text" value="{{client.phone}}">
+        <input %} %}value="{{client.phone}}" class="form-control" client endif id="phone" if name="phone" type="text" {%
+               {%>
     </div>
     <div class="form-group">
-        <label class="form-label" for="TIN">Инн</label>
-        <input class="form-control" id="TIN" name="TIN" type="text" value="{{client.TIN}}">
+        <label class="form-label" for="tin">Инн</label>
+        <input %} %} class="form-control" client endif id="tin" if name="tin" type="text" value="{{client.tin}}" {% {%>
+    </div>
+    <div class="form-group">
+        <label class="form-label" for="bank_details">Банковские данные</label>
+        <textarea class="form-control" id="bank_details" name="bank_details" rows="5"> {% if client %}{{client.notes}} {% endif %}</textarea>
     </div>
     <div class="form-group">
         <label class="form-label" for="notes">Заметки</label>
-        <textarea class="form-control" id="notes" name="notes" rows="5">{{client.notes}}</textarea>
+        <textarea class="form-control" id="notes" name="notes"
+                  rows="5"> {% if client %}{{client.notes}} {% endif %}</textarea>
     </div>
     <button class="btn btn-primary" type="submit">Submit</button>
 </form>
-{% endif %}
 {% endblock %}
