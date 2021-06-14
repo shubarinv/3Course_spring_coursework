@@ -19,15 +19,9 @@
     {% for client in clients %}
     <tr>
         <th>{{client.id}}</th>
-        {% if client.name == '-' %}
-        <td>
-            {{client.second_name}} {{client.first_name}} {{client.third_name}}
-        </td>
-        {% else %}
         <td>
             {{client.name}}
         </td>
-        {% endif %}
         <td>
             <a href="/client/{{ client.id }}">View</a>
         </td>

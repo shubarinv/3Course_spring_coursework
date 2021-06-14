@@ -4,7 +4,7 @@
 
 <h1>Редактирование данных клиента</h1>
 {% if client %}
-<form>
+<form method="post">{% csrf_token %}
     <div class="form-group">
         <label class="form-label" for="client_id">Client ID</label>
         <input aria-describedby="client_id" class="form-control" disabled id="client_id" type="text"
@@ -12,37 +12,28 @@
     </div>
     <div class="form-group">
         <label class="form-label" for="name">Наименование</label>
-        <input class="form-control" id="name" type="text" value="{{client.name}}">
+        <input class="form-control" id="name" name="name" type="text" value="{{client.name}}">
     </div>
     <div class="form-group">
-        <label class="form-label" for="first_name">Имя</label>
-        <input class="form-control" id="first_name" type="text" value="{{client.first_name}}">
-    </div>
-    <div class="form-group">
-        <label class="form-label" for="second_name">Фамилия</label>
-        <input class="form-control" id="second_name" type="text" value="{{client.second_name}}">
-    </div>
-    <div class="form-group">
-        <label class="form-label" for="third_name">Отчество</label>
-        <input class="form-control" id="third_name" type="text" value="{{client.third_name}}">
+        <label class="form-label" for="director">Директор</label>
+        <input class="form-control" id="director" name="director" type="text" value="{{client.director}}">
     </div>
     <div class="form-group">
         <label class="form-label" for="address">Адрес</label>
-        <input class="form-control" id="address" type="text" value="{{client.address}}">
+        <input class="form-control" id="address" name="address" type="text" value="{{client.address}}">
     </div>
     <div class="form-group">
         <label class="form-label" for="phone">Телефон</label>
-        <input class="form-control" id="phone" type="text" value="{{client.phone}}">
+        <input class="form-control" id="phone" name="phone" type="text" value="{{client.phone}}">
     </div>
     <div class="form-group">
         <label class="form-label" for="TIN">Инн</label>
-        <input class="form-control" id="TIN" type="text" value="{{client.TIN}}">
+        <input class="form-control" id="TIN" name="TIN" type="text" value="{{client.TIN}}">
     </div>
     <div class="form-group">
         <label class="form-label" for="notes">Заметки</label>
-        <textarea class="form-control" id="notes" rows="5">{{client.notes}}</textarea>
+        <textarea class="form-control" id="notes" name="notes" rows="5">{{client.notes}}</textarea>
     </div>
-    <a class="btn btn-secondary" href="/clients" role="button" tabindex="-1">Back</a>
     <button class="btn btn-primary" type="submit">Submit</button>
 </form>
 {% endif %}
