@@ -7,31 +7,31 @@
     <div class="form-group">
         <label class="form-label" for="client_id">Client ID</label>
         <input aria-describedby="client_id" class="form-control" disabled id="client_id" type="text"
-               %} %} client endif if value="{{client.id}}" {% {%>
+               {% if client %} value="{{client.id}}" {% endif %}>
     </div>
     <div class="form-group">
         <label class="form-label" for="name">Наименование</label>
-        <input %} %} class="form-control" client endif id="name" if name="name" type="text" value="{{client.name}}" {%
-               {%>
+        <input class="form-control" id="name" name="name" type="text" {% if client %} value="{{client.name}}" {% endif
+               %}>
     </div>
     <div class="form-group">
         <label class="form-label" for="director">Директор</label>
-        <input %} %}value="{{client.director}}" class="form-control" client endif id="director" if name="director"
-               type="text" {% {%>
+        <input class="form-control" id="director" name="director" type="text" {% if client %}value="{{client.director}}"
+               {% endif %}>
     </div>
     <div class="form-group">
         <label class="form-label" for="address">Адрес</label>
-        <input %} %}value="{{client.address}}" class="form-control" client endif id="address" if name="address"
-               type="text" {% {%>
+        <input class="form-control" id="address" name="address" type="text" {% if client %}value="{{client.address}}" {%
+               endif %}>
     </div>
     <div class="form-group">
         <label class="form-label" for="phone">Телефон</label>
-        <input %} %}value="{{client.phone}}" class="form-control" client endif id="phone" if name="phone" type="text" {%
-               {%>
+        <input class="form-control" id="phone" name="phone" type="text" {% if client %}value="{{client.phone}}" {% endif
+               %}>
     </div>
     <div class="form-group">
         <label class="form-label" for="tin">Инн</label>
-        <input %} %} class="form-control" client endif id="tin" if name="tin" type="text" value="{{client.tin}}" {% {%>
+        <input class="form-control" id="tin" name="tin" type="text" {% if client %} value="{{client.tin}}" {% endif %}>
     </div>
     <div class="form-group">
         <label class="form-label" for="bank_details">Банковские данные</label>
