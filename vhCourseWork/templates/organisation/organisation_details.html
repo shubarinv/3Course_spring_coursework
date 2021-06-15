@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if client %}
+<h3>ID: {{ client.id }}</h3>
+<h3>Наименование: {{ client.name }}</h3>
+<h3>Директор: {{ client.director }}</h3>
+<h3>Адрес: {{ client.address }}</h3>
+<h3>Телефон: {{ client.phone }}</h3>
+<h3>ИНН: {{ client.tin }}</h3>
+<h3>Банковские данные: {{ client.bank_details }}</h3>
+<h3>Заметки: {{ client.notes }}</h3>
+{% elif manufacturer %}
+<h3>ID: {{ manufacturer.id }}</h3>
+<h3>Наименование: {{ manufacturer.name }}</h3>
+<h3>Директор: {{ manufacturer.director }}</h3>
+<h3>Главный бухгалтер: {{ manufacturer.accountant }}</h3>
+<h3>Адрес: {{ manufacturer.address }}</h3>
+<h3>Телефон: {{ manufacturer.phone }}</h3>
+<h3>Факс: {{ manufacturer.fax }}</h3>
+<h3>ИНН: {{ manufacturer.tin }}</h3>
+<h3>Банковские данные: {{ manufacturer.bank_details }}</h3>
+<h3>Заметки: {{ manufacturer.notes }}</h3>
+{% elif supplier %}
+<h3>ID: {{ supplier.id }}</h3>
+<h3>Наименование: {{ supplier.name }}</h3>
+<h3>Директор: {{ supplier.director }}</h3>
+<h3>Главный бухгалтер:: {{ supplier.accountant }}</h3>
+<h3>Адрес: {{ supplier.address }}</h3>
+<h3>Телефон: {{ supplier.phone }}</h3>
+<h3>Факс: {{ supplier.fax }}</h3>
+<h3>ИНН: {{ supplier.tin }}</h3>
+<h3>Банковские данные: {{ supplier.bank_details }}</h3>
+<h3>Заметки: {{ supplier.notes }}</h3>
+{% else %}
+<h3>Хто я?</h3>
+{% endif %}
+{% endblock %}

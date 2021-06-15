@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% ifequal  org_type "client" %}
+<h1> {% if org_data %}Редактирование данных{% else %}Добавление{% endif %} клиента</h1>
+{% endifequal %}
+{% ifequal  org_type "supplier" %}
+<h1> {% if org_data %}Редактирование данных{% else %}Добавление{% endif %} поставщика</h1>
+{% endifequal %}
+{% ifequal  org_type "manufacturer" %}
+<h1> {% if org_data %}Редактирование данных{% else %}Добавление{% endif %} производителя</h1>
+{% endifequal %}
+<form method="post">{% csrf_token %}
+    <div class="form-group">
+        <label class="form-label" for="name">Наименование</label>
+        <input class="form-control" id="name" name="name" type="text"
+               {% if org_data %}
+               value="{{org_data.name}}"
+               {% endif %}>
+    </div>
+    <div class="form-group">
+        <label class="form-label" for="director">Директор</label>
+        <input class="form-control" id="director" name="director" type="text"
+               {% if org_data %}
+               value="{{org_data.director}}"
+               {% endif %}>
+    </div>
+    {% ifnotequal org_type "client" %}
+    <div class="form-group">
+        <label class="form-label" for="accountant">Главный бухгалтер</label>
+        <input class="form-control" id="accountant" name="accountant" type="text"
+               {% if org_data %}
+               value="{{org_data.accountant}}"
+               {% endif %}>
+    </div>
+    {% endifnotequal %}
+    <div class="form-group">
+        <label class="form-label" for="address">Адрес</label>
+        <input class="form-control" id="address" name="address" type="text"
+               {% if org_data %}
+               value="{{org_data.address}}"
+               {% endif %}>
+    </div>
+    <div class="form-group">
+        <label class="form-label" for="phone">Телефон</label>
+        <input class="form-control" id="phone" name="phone" type="text"
+               {% if org_data %}
+               value="{{org_data.phone}}"
+               {% endif %}>
+    </div>
+    {% ifnotequal org_type "client" %}
+    <div class="form-group">
+        <label class="form-label" for="fax">Факс</label>
+        <input class="form-control" id="fax" name="fax" type="text"
+               {% if org_data %}
+               value="{{org_data.fax}}"
+               {% endif %}>
+    </div>
+    {% endifnotequal %}
+    <div class="form-group">
+        <label class="form-label" for="tin">Инн</label>
+        <input class="form-control" id="tin" name="tin" type="text"
+               {% if org_data %}
+               value="{{org_data.tin}}"
+               {% endif %}>
+    </div>
+    <div class="form-group">
+        <label class="form-label" for="bank_details">Банковские данные</label>
+        <textarea class="form-control" id="bank_details" name="bank_details" rows="5">
+{% if org_data %}{{org_data.bank_details}}{% endif %}</textarea>
+    </div>
+    <div class="form-group">
+        <label class="form-label" for="notes">Заметки</label>
+        <textarea class="form-control" id="notes" name="notes"
+                  rows="5">{% if org_data %}{{org_data.notes}}{% endif %}</textarea>
+    </div>
+    <button class="btn btn-primary" type="submit">Submit</button>
+</form>
+{% endblock %}

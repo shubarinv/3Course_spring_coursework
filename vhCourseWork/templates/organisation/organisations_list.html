@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% ifequal  org_type "client" %}
+<h1>Клиенты</h1>
+<a href="/add/client">ADD</a>
+{% endifequal %}
+{% ifequal  org_type "manufacturer" %}
+<h1>Производители</h1>
+<a href="/add/manufacturer">ADD</a>
+{% endifequal %}
+{% ifequal  org_type "supplier" %}
+<h1>Поставщики</h1>
+<a href="/add/supplier">ADD</a>
+{% endifequal %}
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% if clients %}
+    {% for client in clients %}
+    <tr>
+        <th>{{client.id}}</th>
+        <td>
+            {{client.name}}
+        </td>
+        <td>
+            <a href="/client/{{ client.id }}">View</a>
+        </td>
+        <td>
+            <a href="/edit/client/{{ client.id }}">Edit</a>
+        </td>
+        <td>
+            <a href="/remove/client/{{ client.id }}">Remove</a>
+        </td>
+    </tr>
+    {% endfor %}
+    {% elif manufacturers %}
+    {% for manufacturer in manufacturers %}
+    <tr>
+        <th>{{manufacturer.id}}</th>
+        <td>
+            {{manufacturer.name}}
+        </td>
+        <td>
+            <a href="/manufacturer/{{ manufacturer.id }}">View</a>
+        </td>
+        <td>
+            <a href="/edit/manufacturer/{{ manufacturer.id }}">Edit</a>
+        </td>
+        <td>
+            <a href="/remove/manufacturer/{{ manufacturer.id }}">Remove</a>
+        </td>
+    </tr>
+    {% endfor %}
+    {% elif suppliers %}
+    {% for supplier in suppliers %}
+    <tr>
+        <th>{{supplier.id}}</th>
+        <td>
+            {{supplier.name}}
+        </td>
+        <td>
+            <a href="/supplier/{{ supplier.id }}">View</a>
+        </td>
+        <td>
+            <a href="/edit/supplier/{{ supplier.id }}">Edit</a>
+        </td>
+        <td>
+            <a href="/remove/supplier/{{ supplier.id }}">Remove</a>
+        </td>
+    </tr>
+    {% endfor %}
+    {% endif %}
+    </tbody>
+</table>
+{% endblock %}
