@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="display-5">Данные по договору #{{contract_data.id}}</h1>
+<ul class="list-group row">
+    <li class="list-group-item">Поставщик: {{contract_data.supplier.name}}</li>
+    <li class="list-group-item">Дата заключения договора: {{contract_data.start_date}}</li>
+    <li class="list-group-item">Дата окончания договора: {{contract_data.conclusion_date}}</li>
+    <li class="list-group-item">Краткий текст договора: {{contract_data.text}}</li>
+    <li class="list-group-item"><a href="/supplier/{{contract_data.supplier.id}}">Данные поставщика<a/></li>
+</ul>
+<button type="button" onclick="window.location.assign('/contracts');" class="btn btn-outline-secondary">Назад</button>
+<button type="button" onclick="window.location.assign('/remove/contract/{{contract_data.id}}');"
+        class="btn btn-outline-warning">Удалить
+</button>
+<button type="button" onclick="window.location.assign('/edit/contract/{{contract_data.id}}');"
+        class="btn btn-outline-primary">Отредактировать
+</button>
+<button type="button" onclick="window.location.assign('/supply_orders/{{contract_data.id}}');"
+        class="btn btn-outline-primary">Договоры на поставку
+</button>
+{% endblock %}
