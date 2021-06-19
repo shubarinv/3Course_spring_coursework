@@ -8,13 +8,13 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
-
+    {% block head %}{% endblock head %}
     <title>{% block title %}{% endblock title %}
     </title>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar navbar-dark bg-dark">
-    <div class="container-fluid">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
+    <div class="container">
         <a class="navbar-brand" href="/">CourseWork</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
                 aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -22,19 +22,28 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-                <a class="nav-link disabled" href="/orders" aria-disabled="true">Заказы</a>
-                <a class="nav-link disabled" href="/contracts" aria-disabled="true">Договоры</a>
-                <a class="nav-link disabled" href="/merchandise" aria-disabled="true">Товары</a>
-                <a class="nav-link disabled" href="/storage" aria-disabled="true">Склад</a>
-                <a class="nav-link" href="/clients">Клиенты</a>
-                <a class="nav-link" href="/suppliers">Поставщики</a>
-                <a class="nav-link" href="/manufacturers">Производители</a>
+                <a class="nav-link" href="/clients" aria-disabled="true">Клиенты</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        Поставщики
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="/suppliers">Список поставщиков</a></li>
+                        <li><a class="dropdown-item" href="/contracts">Договоры с поставщиками</a></li>
+                        <li><a class="dropdown-item" href="/supply_orders">Поставки</a></li>
+                    </ul>
+                </li>
+                <a class="nav-link " href="/manufacturers" aria-disabled="true">Производители</a>
+                <a class="nav-link " href="/merchandise" aria-disabled="true">Товары</a>
+                <a class="nav-link " href="/storage" aria-disabled="true">Склад</a>
             </div>
         </div>
     </div>
 </nav>
-{% block content %}{% endblock content %}
-
+<div class="shadow p-3 mb-5 bg-body rounded  justify-content-center container container-sm">
+    {% block content %}{% endblock content %}
+</div>
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
