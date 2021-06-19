@@ -13,14 +13,14 @@
 <form method="post">{% csrf_token %}
     <div class="form-group">
         <label class="form-label" for="name">Наименование</label>
-        <input class="form-control" id="name" name="name" type="text"
+        <input class="form-control" id="name" name="name" type="text" required
                {% if org_data %}
                value="{{org_data.name}}"
                {% endif %}>
     </div>
     <div class="form-group">
         <label class="form-label" for="director">Директор</label>
-        <input class="form-control" id="director" name="director" type="text"
+        <input class="form-control" id="director" name="director" type="text" required
                {% if org_data %}
                value="{{org_data.director}}"
                {% endif %}>
@@ -36,14 +36,14 @@
     {% endifnotequal %}
     <div class="form-group">
         <label class="form-label" for="address">Адрес</label>
-        <input class="form-control" id="address" name="address" type="text"
+        <input class="form-control" id="address" name="address" type="text" required
                {% if org_data %}
                value="{{org_data.address}}"
                {% endif %}>
     </div>
     <div class="form-group">
         <label class="form-label" for="phone">Телефон</label>
-        <input class="form-control" id="phone" name="phone" type="text"
+        <input class="form-control" id="phone" name="phone" type="text" required
                {% if org_data %}
                value="{{org_data.phone}}"
                {% endif %}>
@@ -59,14 +59,14 @@
     {% endifnotequal %}
     <div class="form-group">
         <label class="form-label" for="tin">Инн</label>
-        <input class="form-control" id="tin" name="tin" type="text"
+        <input class="form-control" id="tin" name="tin" type="text" required
                {% if org_data %}
                value="{{org_data.tin}}"
                {% endif %}>
     </div>
     <div class="form-group">
         <label class="form-label" for="bank_details">Банковские данные</label>
-        <textarea class="form-control" id="bank_details" name="bank_details" rows="5">
+        <textarea class="form-control" id="bank_details" name="bank_details" rows="5" required>
 {% if org_data %}{{org_data.bank_details}}{% endif %}</textarea>
     </div>
     <div class="form-group">

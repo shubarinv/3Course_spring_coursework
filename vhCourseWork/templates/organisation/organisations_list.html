@@ -1,20 +1,22 @@
 {% extends "base.html" %}
 
 {% block content %}
-
+<div class="alert alert-danger" role="alert">
+    Redesign required
+</div>
 {% ifequal  org_type "client" %}
 <h1>Клиенты</h1>
-<a href="/add/client">ADD</a>
+<a href="/add/client" class="btn btn-primary  btn-sm">Добавить клиента</a>
 {% endifequal %}
 {% ifequal  org_type "manufacturer" %}
 <h1>Производители</h1>
-<a href="/add/manufacturer">ADD</a>
+<a href="/add/manufacturer" class="btn btn-primary  btn-sm">Добавить производителя</a>
 {% endifequal %}
 {% ifequal  org_type "supplier" %}
 <h1>Поставщики</h1>
-<a href="/add/supplier">ADD</a>
+<a href="/add/supplier" class="btn btn-primary  btn-sm">Добавить поставщика</a>
 {% endifequal %}
-<table class="table">
+<table class="table table-striped table-hover">
     <thead>
     <tr>
         <th scope="col">#</th>
@@ -27,7 +29,7 @@
     <tbody>
     {% if clients %}
     {% for client in clients %}
-    <tr>
+    <tr onclick="window.location.assign('/client/{{client.id}}');">
         <th>{{client.id}}</th>
         <td>
             {{client.name}}
