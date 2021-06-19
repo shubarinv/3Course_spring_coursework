@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="alert alert-danger" role="alert">
+    Redesign required
+</div>
+<div class="container justify-content-center col-6">
+    <h1 class="display-5">Данные по наличию на складе {{stock_data.merch.name}} ID:{{stock_data.merch.id}}</h1>
+    <ul class="list-group row">
+        <li class="list-group-item  col-6">Наименование: {{stock_data.merch.name}}</li>
+        <li class="list-group-item col-6">Производитель: {{stock_data.merch.manufacturer.name}}
+            (ID:{{stock_data.merch.manufacturer.id}})
+        </li>
+        <li class="list-group-item col-6">Осталось на складе: {{stock_data.amount}}</li>
+    </ul>
+    <button type="button" onclick="window.location.assign('/storage');" class="btn btn-outline-secondary">Назад</button>
+    <button type="button" onclick="window.location.assign('/edit/stock/{{stock_data.merch.id}}');"
+            class="btn btn-outline-primary">Отредактировать
+    </button>
+</div>
+{% endblock %}

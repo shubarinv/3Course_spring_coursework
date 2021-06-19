@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="display-5">Склад</h1>
+<table class="table table-striped table-hover">
+    <thead>
+    <tr>
+        <th scope="col">ID Товара</th>
+        <th scope="col">Наименование</th>
+        <th scope="col">Осталось на складе (шт)</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for stock in stock_data %}
+    <tr onclick="window.location.assign('/stock/{{stock.merch.id}}');">
+        <th>
+            {{stock.merch.id}}
+        </th>
+        <td>
+            <a href="/merchandise_info/{{stock.merch.id}}">{{stock.merch.name}}</a>
+        </td>
+        <td>
+            {{stock.amount}}
+        </td>
+        <td>
+            {{order.order_date}}
+        </td>
+        <td>
+            {{order.amount}}
+        </td>
+        <td>
+            {{order.total}}
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
