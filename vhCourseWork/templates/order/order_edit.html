@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block head %}
+<script
+        src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+        crossorigin="anonymous"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+{% endblock %}
+{% block content %}
+<div class="alert alert-danger" role="alert">
+    Redesign required
+</div>
+<form method="post">{% csrf_token %}
+    <div class="input-group mb-3" id="client_select">
+        <label class="form-label" for="inputClientSelect">Клиент</label>
+        <select class="form-select" id="inputClientSelect" name="client_id" required>
+            <option selected>Выберите клиента</option>
+            {% for client in client_data %}
+            <option value="{{client.id}}" {% ifequal order_data.client.id client.id %} selected {% endifequal %}
+            >{{client.name}} (ID: {{client.id}})
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="input-group mb-3">
+        <label class="form-label" for="inputMerchSelect">Товар</label>
+        <select class="form-select" id="inputMerchSelect" name="merch_id" required>
+            <option selected>Выберите товар</option>
+            {% for merch in merch_data %}
+            <option value="{{merch.id}}" {% ifequal order_data.merch.id merch.id %} selected {% endifequal %}
+            >{{merch.name}} (ID: {{merch.id}})
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-floating">
+        <input type="date" class="form-control" id="floatingOrder_Date" name="order_date" required
+               value='{{order_data.order_date|date:"Y-m-d"}}'>
+        <label for="floatingOrder_Date">Дата заключения договора</label>
+    </div>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="amount">Кол-во</span>
+        </div>
+        <input type="text" class="form-control" required aria-label="Кол-во"
+               aria-describedby="amount" required name="amount" value="{{order_data.amount}}">
+    </div>
+    <div class="input-group mb-3">
+        <label class="form-label" for="inputOrderPaid">Заказ оплачен</label>
+        <select class="form-select" id="inputOrderPaid" name="order_paid" required>
+            <option value="True" {% ifequal order_data.paid True %} selected {% endifequal %}>Да</option>
+            <option value="False" {% ifequal order_data.paid False %} selected {% endifequal %}>Нет</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+<script>
+    $(document).ready(function () {
+        $('.form-select').select2();
+    });
+</script>
+{% endblock %}

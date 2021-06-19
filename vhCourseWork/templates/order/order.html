@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="alert alert-danger" role="alert">
+    Redesign required
+</div>
+<div class="container justify-content-center col-6">
+    <h1>Данные по заказу #{{order_data.id}}</h1>
+    <ul class="list-group row">
+        <li class="list-group-item  col-6">Заказчик: {{order_data.client.name}}</li>
+        <li class="list-group-item col-6">Товар: {{order_data.merch.name}}</li>
+        <li class="list-group-item col-6">Дата заказа: {{order_data.order_date}}</li>
+        <li class="list-group-item col-6">Кол-во: {{order_data.amount}}</li>
+        <li class="list-group-item col-6">Итого: {{order_data.total}}</li>
+        <li class="list-group-item col-6">Заказ {% ifequal order_data.paid False %} не {% endifequal %} оплачен</li>
+    </ul>
+    <button type="button" onclick="window.location.assign('/orders');" class="btn btn-outline-secondary">Назад</button>
+    <button type="button" onclick="window.location.assign('/remove/order/{{order_data.id}}');"
+            class="btn btn-outline-warning">Удалить
+    </button>
+    <button type="button" onclick="window.location.assign('/edit/order/{{order_data.id}}');"
+            class="btn btn-outline-primary">Отредактировать
+    </button>
+</div>
+{% endblock %}

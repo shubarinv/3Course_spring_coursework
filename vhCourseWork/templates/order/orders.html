@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="alert alert-danger" role="alert">
+    Redesign required
+</div>
+<h1 class="display-5">Заказы</h1>
+<a href="/add/order">ADD</a>
+<table class="table table-striped table-hover">
+    <thead>
+    <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Клиент</th>
+        <th scope="col">Товар</th>
+        <th scope="col">Дата заказа</th>
+        <th scope="col">Количество</th>
+        <th scope="col">Оплата</th>
+        <th scope="col">Итого</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for order in orders_data %}
+    <tr onclick="window.location.assign('/order/{{order.id}}');">
+        <th>
+            {{order.id}}
+        </th>
+        <td>
+            <a href="/client/{{order.client.id}}">{{order.client.name}}</a>
+        </td>
+        <td>
+            <a href="/merchandise_info/{{order.merch.id}}">{{order.merch.name}}</a>
+        </td>
+        <td>
+            {{order.order_date}}
+        </td>
+        <td>
+            {{order.amount}}
+        </td>
+        <td>
+            {% ifequal order.paid False %} Не олачен {% endifequal %}
+            {% ifequal order.paid True %} Олачен {% endifequal %}
+        </td>
+        <td>
+            {{order.total}}
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
