@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load django_template_maths %}
+{% block content %}
+<h1 class="display-5">Данные по договору поставки #{{order_data.id}}</h1>
+<ul class="list-group row">
+    <li class="list-group-item">Поставщик: {{order_data.contract.supplier.name}}</li>
+    <li class="list-group-item">Дата заключения договора c поставщиком: {{order_data.contract.start_date}}</li>
+    <li class="list-group-item">Номер договора c поставщиком: {{order_data.contract.id}}</li>
+    <li class="list-group-item"><a href="/contract/{{order_data.contract.id}}">
+        Договор c поставщиком</a></li>
+</ul>
+<hr>
+<ul class="list-group row">
+    <li class="list-group-item">Товар: {{order_data.merch.name}} (ID:{{order_data.merch.id}})</li>
+    <li class="list-group-item">Кол-во: {{order_data.amount}}</li>
+    <li class="list-group-item">Цена за шт: {{order_data.price}}</li>
+    <li class="list-group-item">Итого: {{ order_data.amount|mul:order_data.price }} руб</li>
+    <li class="list-group-item">Дата поставки: {{order_data.delivery_date}}</li>
+    <li class="list-group-item">{% ifequal order_data.shipped False %} Не поставлен {% endifequal %}
+        {% ifequal order_data.shipped True %} Поставлен {% endifequal %}
+    </li>
+</ul>
+<button type="button" onclick="window.location.assign('/remove/supply_order/{{order_data.id}}');"
+        class="btn btn-outline-warning">Удалить
+</button>
+<button type="button" onclick="window.location.assign('/edit/supply_order/{{order_data.id}}');"
+        class="btn btn-outline-primary">Отредактировать
+</button>
+{% ifequal order_data.shipped False %}
+<button type="button" onclick="window.location.assign('/supply_order/{{order_data.id}}/received');"
+        class="btn btn-outline-primary">Получено
+</button>
+{% endifequal %}
+{% endblock %}
