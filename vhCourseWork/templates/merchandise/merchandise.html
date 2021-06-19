@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="display-5">Товары</h1>
+<a href="/add/merchandise">ADD</a>
+<table class="table table-striped table-hover">
+    <thead>
+    <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Name</th>
+        <th scope="col">Manufacturer</th>
+        <th scope="col">Price</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for merchandise in merchandise_data %}
+    <tr onclick="window.location.assign('/merchandise_info/{{merchandise.id}}');">
+        <th>
+            {{merchandise.id}}
+        </th>
+        <td>
+            {{merchandise.name}}
+        </td>
+        <td>
+            <a href="/manufacturer/{{merchandise.manufacturer.id}}">{{merchandise.manufacturer.name}}
+                (ID:{{merchandise.manufacturer.id}})</a>
+        </td>
+        <td>
+            {{merchandise.price}}
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
