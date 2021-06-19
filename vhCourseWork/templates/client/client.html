@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if client %}
+<h3>ID: {{ client.id }}</h3>
+<h3>Наименование: {{ client.name }}</h3>
+<h3>Директор: {{ client.director }}</h3>
+<h3>Адрес: {{ client.address }}</h3>
+<h3>Телефон: {{ client.phone }}</h3>
+<h3>ИНН: {{ client.tin }}</h3>
+<h3>Банковские данные: {{ client.bank_details }}</h3>
+<h3>Заметки: {{ client.notes }}</h3>
+{% endif %}
+{% endblock %}
