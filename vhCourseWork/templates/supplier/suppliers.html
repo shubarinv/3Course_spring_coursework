@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="display-5">Поставщики</h1>
+<a href="/add/supplier" class="btn btn-primary  btn-sm">Добавить поставщика</a>
+<table class="table table-striped table-hover">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Наименование</th>
+        <th scope="col">Директор</th>
+        <th scope="col">Адрес</th>
+        <th scope="col">ИНН</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for supplier in suppliers %}
+    <tr onclick="window.location.assign('/supplier/{{supplier.id}}');">
+        <td>{{supplier.id}}</td>
+        <th>
+            {{supplier.name}}
+        </th>
+        <td>
+            {{supplier.director}}
+        </td>
+        <td>
+            {{supplier.address}}
+        </td>
+        <td>
+            {{supplier.tin}}
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
