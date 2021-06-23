@@ -1,3 +1,5 @@
+from django.contrib.auth.decorators import login_required
+from django.db.models import RestrictedError
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404
 from django.template import loader
@@ -14,7 +16,7 @@ def index(request):
 #
 # detailed info related
 #
-
+@login_required
 def client(request, client_id):
     client_data = get_object_or_404(Client, pk=client_id)
     template = loader.get_template('client/client.html')
@@ -24,15 +26,17 @@ def client(request, client_id):
     return HttpResponse(template.render(context, request))
 
 
+@login_required
 def manufacturer(request, manufacturer_id):
     manufacturer_data = get_object_or_404(Manufacturer, pk=manufacturer_id)
-    template = loader.get_template('organisation/organisation_details.html')
+    template = loader.get_template('manufacturer/manufacturer.html')
     context = {
         'manufacturer': manufacturer_data,
     }
     return HttpResponse(template.render(context, request))
 
 
+@login_required
 def supplier(request, supplier_id):
     supplier_data = get_object_or_404(Supplier, pk=supplier_id)
     template = loader.get_template('organisation/organisation_details.html')
@@ -42,15 +46,19 @@ def supplier(request, supplier_id):
     return HttpResponse(template.render(context, request))
 
 
+@login_required
 def order(request, order_id):
     order_data = get_object_or_404(Order, pk=order_id)
+    shipment_data = get_object_or_404(Shipment, pk=order_data)
     template = loader.get_template('order/order.html')
     context = {
         'order_data': order_data,
+        'shipment_data': shipment_data,
     }
     return HttpResponse(template.render(context, request))
 
 
+@login_required
 def stock(request, stock_id):
     stock_data = get_object_or_404(Stock, pk=stock_id)
     template = loader.get_template('storage/stock.html')
@@ -60,6 +68,7 @@ def stock(request, stock_id):
     return HttpResponse(template.render(context, request))
 
 
+@login_required
 def merchandise_info(request, merch_id):
     merch_data = get_object_or_404(Merchandise, pk=merch_id)
     template = loader.get_template('merchandise/merchandise_info.html')
@@ -69,6 +78,7 @@ def merchandise_info(request, merch_id):
     return HttpResponse(template.render(context, request))
 
 
+@login_required
 def contract(request, contract_id):
     contract_data = get_object_or_404(Contract, pk=contract_id)
     template = loader.get_template('contract/contract.html')
@@ -78,6 +88,7 @@ def contract(request, contract_id):
     return HttpResponse(template.render(context, request))
 
 
+@login_required
 def supply_order(request, order_id):
     order_data = get_object_or_404(SupplyOrder, pk=order_id)
     template = loader.get_template('supply_order/supply_order.html')
@@ -90,9 +101,10 @@ def supply_order(request, order_id):
 #
 # list view related
 #
-
+@login_required
 def clients(request):
     clients_data = Client.objects.all()
+    clients_data = clients_data.order_by('pk')
     template = loader.get_template('client/clients.html')
     context = {
         'clients': clients_data,
@@ -100,18 +112,21 @@ def clients(request):
     return HttpResponse(template.render(context, request))
 
 
+@login_required
 def manufacturers(request):
     manufacturers_data = Manufacturer.objects.all()
-    template = loader.get_template('organisation/organisations_list.html')
+
+    template = loader.get_template('manufacturer/manufacturers.html')
     context = {
-        'org_type': "manufacturer",
         'manufacturers': manufacturers_data,
     }
     return HttpResponse(template.render(context, request))
 
 
+@login_required
 def suppliers(request):
     suppliers_data = Supplier.objects.all()
+    suppliers_data = suppliers_data.order_by('pk')
     template = loader.get_template('supplier/suppliers.html')
     context = {
         'org_type': "supplier",
@@ -120,17 +135,24 @@ def suppliers(request):
     return HttpResponse(template.render(context, request))
 
 
+@login_required
 def orders(request):
     orders_data = Order.objects.all()
+    orders_data = orders_data.order_by('pk')
     template = loader.get_template('order/orders.html')
+    shipment_data = Shipment.objects.all()
     context = {
-        'orders_data': orders_data
+        'orders_data': orders_data,
+        'shipment_data': shipment_data
+
     }
     return HttpResponse(template.render(context, request))
 
 
+@login_required
 def merchandise(request):
     merchandise_data = Merchandise.objects.all()
+    merchandise_data = merchandise_data.order_by('pk')
     template = loader.get_template('merchandise/merchandise.html')
     context = {
         'merchandise_data': merchandise_data
@@ -138,8 +160,10 @@ def merchandise(request):
     return HttpResponse(template.render(context, request))
 
 
+@login_required
 def contracts(request):
     contracts_data = Contract.objects.all()
+    contracts_data = contracts_data.order_by('pk')
     template = loader.get_template('contract/contracts.html')
     context = {
         'contracts_data': contracts_data
@@ -147,8 +171,10 @@ def contracts(request):
     return HttpResponse(template.render(context, request))
 
 
+@login_required
 def storage(request):
     stock_data = Stock.objects.all()
+    stock_data = stock_data.order_by('pk')
     template = loader.get_template('storage/storage.html')
     context = {
         'stock_data': stock_data
@@ -156,8 +182,10 @@ def storage(request):
     return HttpResponse(template.render(context, request))
 
 
+@login_required
 def supply_orders_for_contract(request, contract_id):
     supply_orders_data = SupplyOrder.objects.filter(contract=get_object_or_404(Contract, pk=contract_id))
+    supply_orders_data = supply_orders_data.order_by('pk')
     template = loader.get_template('supply_order/supply_orders.html')
     context = {
         'supply_orders_data': supply_orders_data,
@@ -166,8 +194,10 @@ def supply_orders_for_contract(request, contract_id):
     return HttpResponse(template.render(context, request))
 
 
+@login_required
 def supply_orders(request):
     supply_orders_data = SupplyOrder.objects.all()
+    supply_orders_data = supply_orders_data.order_by('pk')
     template = loader.get_template('supply_order/supply_orders.html')
     context = {
         'supply_orders_data': supply_orders_data
@@ -178,7 +208,7 @@ def supply_orders(request):
 #
 # edit related
 #
-
+@login_required
 def client_edit(request, client_id):
     client_data = get_object_or_404(Client, pk=client_id)
     if request.method == 'POST':
@@ -200,6 +230,7 @@ def client_edit(request, client_id):
         return HttpResponse(template.render(context, request))
 
 
+@login_required
 def manufacturer_edit(request, manufacturer_id):
     manufacturer_data = get_object_or_404(Manufacturer, pk=manufacturer_id)
     if request.method == 'POST':
@@ -223,6 +254,7 @@ def manufacturer_edit(request, manufacturer_id):
         return HttpResponse(template.render(context, request))
 
 
+@login_required
 def supplier_edit(request, supplier_id):
     supplier_data = get_object_or_404(Supplier, pk=supplier_id)
     if request.method == 'POST':
@@ -246,6 +278,7 @@ def supplier_edit(request, supplier_id):
         return HttpResponse(template.render(context, request))
 
 
+@login_required
 def order_edit(request, order_id):
     order_data = get_object_or_404(Order, pk=order_id)
     client_data = Client.objects.all()
@@ -269,6 +302,7 @@ def order_edit(request, order_id):
         return HttpResponse(template.render(context, request))
 
 
+@login_required
 def merchandise_edit(request, merch_id):
     merch_data = get_object_or_404(Merchandise, pk=merch_id)
     manufacturers_data = Manufacturer.objects.all()
@@ -288,6 +322,7 @@ def merchandise_edit(request, merch_id):
         return HttpResponse(template.render(context, request))
 
 
+@login_required
 def stock_edit(request, stock_id):
     stock_data = get_object_or_404(Stock, pk=stock_id)
     if request.method == 'POST':
@@ -302,10 +337,28 @@ def stock_edit(request, stock_id):
         return HttpResponse(template.render(context, request))
 
 
-def contract_edit():
-    return None
+@login_required
+def contract_edit(request, contract_id):
+    contract_data = get_object_or_404(Contract, pk=contract_id)
+    if request.method == 'POST':
+        contract_data.supplier = get_object_or_404(Supplier, pk=request.POST.get('supplier'))
+        contract_data.start_date = request.POST.get('contract_start_date')
+        contract_data.conclusion_date = request.POST.get('contract_end_date')
+        contract_data.text = request.POST.get('description')
+        contract_data.save()
+        return HttpResponseRedirect('/contracts')
+    else:
+        template = loader.get_template('contract/contract_edit.html')
+        suppliers_data = Supplier.objects.all()
+
+        context = {
+            'suppliers_data': suppliers_data,
+            'contract_data': contract_data,
+        }
+        return HttpResponse(template.render(context, request))
 
 
+@login_required
 def supply_order_edit(request, order_id):
     supply_order_data = get_object_or_404(SupplyOrder, pk=order_id)
     if request.method == 'POST':
@@ -313,7 +366,6 @@ def supply_order_edit(request, order_id):
         supply_order_data.order_date = request.POST.get('supply_order_start_date')
         supply_order_data.delivery_date = request.POST.get('supply_order_delivery_date')
         supply_order_data.amount = request.POST.get('amount')
-        supply_order_data.shipped = False
         supply_order_data.price = supply_order_data.merch.price
         supply_order_data.save()
         return HttpResponseRedirect('/supply_orders/' + str(supply_order_data.contract.id))
@@ -329,7 +381,7 @@ def supply_order_edit(request, order_id):
 
 #  Add related
 #
-
+@login_required
 def client_add(request):
     if request.method == 'POST':
         client_data = Client()
@@ -350,6 +402,7 @@ def client_add(request):
         return HttpResponse(template.render(context, request))
 
 
+@login_required
 def manufacturer_add(request):
     if request.method == 'POST':
         manufacturer_data = Manufacturer()
@@ -372,6 +425,7 @@ def manufacturer_add(request):
         return HttpResponse(template.render(context, request))
 
 
+@login_required
 def supplier_add(request):
     if request.method == 'POST':
         supplier_data = Supplier()
@@ -394,6 +448,7 @@ def supplier_add(request):
         return HttpResponse(template.render(context, request))
 
 
+@login_required
 def merchandise_add(request):
     if request.method == 'POST':
         merch_data = Merchandise()
@@ -416,6 +471,7 @@ def merchandise_add(request):
         return HttpResponse(template.render(context, request))
 
 
+@login_required
 def order_add(request):
     if request.method == 'POST':
         order_data = Order()
@@ -426,6 +482,10 @@ def order_add(request):
         order_data.paid = False
         order_data.total = order_data.merch.price * float(order_data.amount)
         order_data.save()
+        shipment_data = Shipment()
+        shipment_data.order = order_data
+        shipment_data.status = "Ожидание оплаты"
+        shipment_data.save()
         return HttpResponseRedirect('/orders')
     else:
         template = loader.get_template('order/order_add.html')
@@ -438,6 +498,7 @@ def order_add(request):
         return HttpResponse(template.render(context, request))
 
 
+@login_required
 def contract_add(request):
     if request.method == 'POST':
         contract_data = Contract()
@@ -456,6 +517,7 @@ def contract_add(request):
         return HttpResponse(template.render(context, request))
 
 
+@login_required
 def supply_order_add_with_contract(request, contract_id):
     if request.method == 'POST':
         supply_order_data = SupplyOrder()
@@ -480,6 +542,7 @@ def supply_order_add_with_contract(request, contract_id):
         return HttpResponse(template.render(context, request))
 
 
+@login_required
 def supply_order_add(request):
     if request.method == 'POST':
         supply_order_data = SupplyOrder()
@@ -491,7 +554,7 @@ def supply_order_add(request):
         supply_order_data.shipped = False
         supply_order_data.price = supply_order_data.merch.price
         supply_order_data.save()
-        return HttpResponseRedirect('/supply_orders/' + str(supply_order_data.contract.id))
+        return HttpResponseRedirect('/supply_orders')
     else:
         template = loader.get_template('supply_order/supply_order_add.html')
         contract_data = Contract.objects.all()
@@ -506,42 +569,111 @@ def supply_order_add(request):
 #
 # Remove related
 #
-
+@login_required
 def client_remove(request, client_id):
-    client_data = get_object_or_404(Client, pk=client_id).delete()
+    try:
+        client_data = get_object_or_404(Client, pk=client_id).delete()
+    except RestrictedError as e:
+        print(e.restricted_objects)
+        template = loader.get_template('removal_error.html')
+        context = handleRemovalError(e.restricted_objects, get_object_or_404(Client, pk=client_id))
+        context['errored_obj_type'] = "Client"
+        print(context)
+        return HttpResponse(template.render(context, request))
+
     return HttpResponseRedirect('/clients')
 
 
+@login_required
 def manufacturer_remove(request, manufacturer_id):
-    manufacturer_data = get_object_or_404(Manufacturer, pk=manufacturer_id).delete()
+    try:
+        manufacturer_data = get_object_or_404(Manufacturer, pk=manufacturer_id).delete()
+    except RestrictedError as e:
+        print(e.restricted_objects)
+        template = loader.get_template('removal_error.html')
+        context = handleRemovalError(e.restricted_objects, get_object_or_404(Manufacturer, pk=manufacturer_id))
+        context['errored_obj_type'] = "Manufacturer"
+        print(context)
+        return HttpResponse(template.render(context, request))
+
     return HttpResponseRedirect('/manufacturers')
 
 
+@login_required
 def supplier_remove(request, supplier_id):
-    supplier_data = get_object_or_404(Supplier, pk=supplier_id).delete()
+    try:
+        supplier_data = get_object_or_404(Supplier, pk=supplier_id).delete()
+    except RestrictedError as e:
+        print(e.restricted_objects)
+        template = loader.get_template('removal_error.html')
+        context = handleRemovalError(e.restricted_objects, get_object_or_404(Supplier, pk=supplier_id))
+        context['errored_obj_type'] = "Supplier"
+        print(context)
+        return HttpResponse(template.render(context, request))
+
     return HttpResponseRedirect('/suppliers')
 
 
+@login_required
 def order_remove(request, order_id):
-    order_data = get_object_or_404(Order, pk=order_id).delete()
+    try:
+        order_data = get_object_or_404(Order, pk=order_id).delete()
+    except RestrictedError as e:
+        print(e.restricted_objects)
+        template = loader.get_template('removal_error.html')
+        context = handleRemovalError(e.restricted_objects, get_object_or_404(Order, pk=order_id))
+        context['errored_obj_type'] = "Order"
+        print(context)
+        return HttpResponse(template.render(context, request))
+
     return HttpResponseRedirect('/orders')
 
 
+@login_required
 def merch_remove(request, merch_id):
-    merch_data = get_object_or_404(Merchandise, pk=merch_id).delete()
+    try:
+        merch_data = get_object_or_404(Merchandise, pk=merch_id).delete()
+    except RestrictedError as e:
+        print(e.restricted_objects)
+        template = loader.get_template('removal_error.html')
+        context = handleRemovalError(e.restricted_objects, get_object_or_404(Merchandise, pk=merch_id))
+        context['errored_obj_type'] = "Merch"
+        print(context)
+        return HttpResponse(template.render(context, request))
+
     return HttpResponseRedirect('/merchandise')
 
 
+@login_required
 def contract_remove(request, contract_id):
-    contract_data = get_object_or_404(Contract, pk=contract_id).delete()
+    try:
+        contract_data = get_object_or_404(Contract, pk=contract_id).delete()
+    except RestrictedError as e:
+        print(e.restricted_objects)
+        template = loader.get_template('removal_error.html')
+        context = handleRemovalError(e.restricted_objects, get_object_or_404(Contract, pk=contract_id))
+        context['errored_obj_type'] = "Contract"
+        print(context)
+        return HttpResponse(template.render(context, request))
+
     return HttpResponseRedirect('/contracts')
 
 
+@login_required
 def supply_order_remove(request, order_id):
-    order_data = get_object_or_404(SupplyOrder, pk=order_id).delete()
+    try:
+        order_data = get_object_or_404(SupplyOrder, pk=order_id).delete()
+    except RestrictedError as e:
+        print(e.restricted_objects)
+        template = loader.get_template('removal_error.html')
+        context = handleRemovalError(e.restricted_objects, get_object_or_404(SupplyOrder, pk=order_id))
+        context['errored_obj_type'] = "Supply_order"
+        print(context)
+        return HttpResponse(template.render(context, request))
     return HttpResponseRedirect('/supply_orders')
 
 
+@login_required
 def supply_order_received(request, order_id):
     order_data = get_object_or_404(SupplyOrder, pk=order_id)
     order_data.shipped = True
@@ -552,10 +684,114 @@ def supply_order_received(request, order_id):
     return HttpResponseRedirect('/supply_order/' + str(order_id))
 
 
-# AJAX Stuff
+@login_required
+def order_paid(request, order_id):
+    order_data = get_object_or_404(Order, pk=order_id)
+    order_data.paid = True
+    order_data.save()
+    shipment_data = get_object_or_404(Shipment, pk=order_id)
+    shipment_data.status = "Ожидание отгрузки"
+    shipment_data.save()
+    return HttpResponseRedirect('/order/' + str(order_id))
+
+
+@login_required
+def order_shipped(request, order_id):
+    shipment_data = get_object_or_404(Shipment, pk=order_id)
+
+    order_data = get_object_or_404(Order, pk=order_id)
+    stock_data = get_object_or_404(Stock, pk=order_data.merch)
+    print(stock_data.amount)
+    print(order_data.amount)
+    if stock_data.amount >= order_data.amount:
+        stock_data.amount = stock_data.amount - order_data.amount
+        stock_data.save()
+        shipment_data.status = "Отгружен"
+        shipment_data.save()
+        return HttpResponseRedirect('/order/' + str(order_id))
+    else:
+        return HttpResponse("Так нельзя. Кол-во товара на складе, меньше чем в заказе")
+
+    # AJAX Stuff
+
+
 def ajax_merchandise_price(request, merchandise_id):
     merch = get_object_or_404(Merchandise, pk=merchandise_id)
     data = {
         'price': merch.price
     }
     return JsonResponse(data)
+
+
+def ajax_contact_dates(request, contract_id):
+    contact = get_object_or_404(Contract, pk=contract_id)
+    data = {
+        'start': contact.start_date,
+        'end': contact.conclusion_date
+    }
+    return JsonResponse(data)
+
+
+def handleRemovalError(restricted_objects, errored_obj):
+    orders_data = []
+    contracts_data = []
+    clients_data = []
+    manufacturers_data = []
+    suppliers_data = []
+    merchandise_data = []
+    supply_order_data = []
+    context = {
+        'errored_obj': errored_obj,
+    }
+    for restricted_object in restricted_objects:
+        if isinstance(restricted_object, Order):
+            orders_data.append(restricted_object)
+        if isinstance(restricted_object, Contract):
+            contracts_data.append(restricted_object)
+        if isinstance(restricted_object, Client):
+            clients_data.append(restricted_object)
+        if isinstance(restricted_object, SupplyOrder):
+            supply_order_data.append(restricted_object)
+        if isinstance(restricted_object, Manufacturer):
+            manufacturers_data.append(restricted_object)
+        if isinstance(restricted_object, Supplier):
+            suppliers_data.append(restricted_object)
+        if isinstance(restricted_object, Merchandise):
+            merchandise_data.append(restricted_object)
+    print(orders_data)
+    if len(orders_data) > 1:
+        context['orders'] = orders_data
+    elif len(orders_data) == 1:
+        context['order'] = orders_data[0]
+
+    if len(contracts_data) > 1:
+        context['contracts'] = contracts_data
+    elif len(contracts_data) == 1:
+        context['contract'] = contracts_data[0]
+
+    if len(clients_data) > 1:
+        context['clients'] = clients_data
+    elif len(clients_data) == 1:
+        context['client'] = clients_data[0]
+
+    if len(supply_order_data) > 1:
+        context['supply_orders'] = supply_order_data
+    elif len(supply_order_data) == 1:
+        context['supply_order'] = supply_order_data[0]
+
+    if len(manufacturers_data) > 1:
+        context['manufacturers'] = manufacturers_data
+    elif len(manufacturers_data) == 1:
+        context['manufacturer'] = manufacturers_data[0]
+
+    if len(suppliers_data) > 1:
+        context['suppliers'] = suppliers_data
+    elif len(suppliers_data) == 1:
+        context['supplier'] = suppliers_data[0]
+
+    if len(merchandise_data) > 1:
+        context['merchandise'] = merchandise_data
+    elif len(merchandise_data) == 1:
+        context['merch'] = merchandise_data[0]
+
+    return context
