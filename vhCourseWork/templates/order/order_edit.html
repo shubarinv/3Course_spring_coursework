@@ -8,9 +8,7 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 {% endblock %}
 {% block content %}
-<div class="alert alert-danger" role="alert">
-    Redesign required
-</div>
+<h1>Редактирование заказа</h1>
 <form method="post">{% csrf_token %}
     <div class="input-group mb-3" id="client_select">
         <label class="form-label" for="inputClientSelect">Клиент</label>
@@ -26,7 +24,6 @@
     <div class="input-group mb-3">
         <label class="form-label" for="inputMerchSelect">Товар</label>
         <select class="form-select" id="inputMerchSelect" name="merch_id" required>
-            <option selected>Выберите товар</option>
             {% for merch in merch_data %}
             <option value="{{merch.id}}" {% ifequal order_data.merch.id merch.id %} selected {% endifequal %}
             >{{merch.name}} (ID: {{merch.id}})
@@ -41,10 +38,10 @@
     </div>
     <div class="input-group mb-3">
         <div class="input-group-prepend">
-            <span class="input-group-text" id="amount">Кол-во</span>
+            <span class="input-group-text">Кол-во</span>
         </div>
-        <input type="text" class="form-control" required aria-label="Кол-во"
-               aria-describedby="amount" required name="amount" value="{{order_data.amount}}">
+        <input type="number" min="1" step="1" class="form-control" required aria-label="Кол-во"
+               aria-describedby="amount" required id="amount" name="amount" value="{{order_data.amount}}">
     </div>
     <div class="input-group mb-3">
         <label class="form-label" for="inputOrderPaid">Заказ оплачен</label>
@@ -53,11 +50,45 @@
             <option value="False" {% ifequal order_data.paid False %} selected {% endifequal %}>Нет</option>
         </select>
     </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text">Итого</span>
+        </div>
+        <input type="text" class="form-control" aria-label="total"
+               aria-describedby="total" id="total" name="total" disabled>
+    </div>
+    <button type="submit" class="btn btn-primary">Сохранить</button>
 </form>
 <script>
+    var merch_price = 0;
     $(document).ready(function () {
         $('.form-select').select2();
+        update_merch_price();
+    });
+
+    function update_total() {
+        var amount = document.getElementById('amount').value;
+        document.getElementById('total').value = merch_price * amount + " руб";
+    }
+
+    function update_merch_price() {
+        $.ajax({
+            url: '/ajax/merchandise/price/' + document.getElementById('inputMerchSelect').value,
+            data: {},
+            dataType: 'json',
+            success: function (data) {
+                merch_price = data.price;
+                console.log(merch_price);
+                update_total();
+            }
+        });
+    }
+
+    $("#amount").change(function () {
+        update_total();
+    });
+    $("#inputMerchSelect").change(function () {
+        update_merch_price();
     });
 </script>
 {% endblock %}

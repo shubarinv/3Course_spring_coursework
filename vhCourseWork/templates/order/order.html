@@ -1,25 +1,36 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="alert alert-danger" role="alert">
-    Redesign required
-</div>
-<div class="container justify-content-center col-6">
+<div class="container justify-content-center">
     <h1>Данные по заказу #{{order_data.id}}</h1>
     <ul class="list-group row">
-        <li class="list-group-item  col-6">Заказчик: {{order_data.client.name}}</li>
-        <li class="list-group-item col-6">Товар: {{order_data.merch.name}}</li>
-        <li class="list-group-item col-6">Дата заказа: {{order_data.order_date}}</li>
-        <li class="list-group-item col-6">Кол-во: {{order_data.amount}}</li>
-        <li class="list-group-item col-6">Итого: {{order_data.total}}</li>
-        <li class="list-group-item col-6">Заказ {% ifequal order_data.paid False %} не {% endifequal %} оплачен</li>
+        <li class="list-group-item ">Заказчик: {{order_data.client.name}}</li>
+        <li class="list-group-item ">Товар: {{order_data.merch.name}}</li>
+        <li class="list-group-item ">Дата заказа: {{order_data.order_date}}</li>
+        <li class="list-group-item ">Кол-во: {{order_data.amount}}</li>
+        <li class="list-group-item ">Итого: {{order_data.total}}</li>
+        <li class="list-group-item ">Заказ {% ifequal order_data.paid False %} не {% endifequal %} оплачен</li>
+        <li class="list-group-item ">Статус: {{shipment_data.status}}</li>
     </ul>
+
     <button type="button" onclick="window.location.assign('/orders');" class="btn btn-outline-secondary">Назад</button>
+    {% ifequal order_data.paid False %}
     <button type="button" onclick="window.location.assign('/remove/order/{{order_data.id}}');"
             class="btn btn-outline-warning">Удалить
     </button>
     <button type="button" onclick="window.location.assign('/edit/order/{{order_data.id}}');"
             class="btn btn-outline-primary">Отредактировать
     </button>
+    <button type="button" onclick="window.location.assign('/order/{{order_data.id}}/paid');"
+            class="btn btn-outline-primary">Оплачен
+    </button>
+    {% endifequal %}
+    {% ifequal order_data.paid True %}
+    {% ifequal shipment_data.status "Ожидание отгрузки" %}
+    <button type="button" onclick="window.location.assign('/order/{{order_data.id}}/shipped');"
+            class="btn btn-outline-primary">Отгружен
+    </button>
+    {% endifequal %}
+    {% endifequal %}
 </div>
 {% endblock %}
