@@ -1,0 +1,192 @@
+{% extends "base.html" %}
+{% load django_template_maths %}
+{% block content %}
+<h2>Произошла ошибка при удалении
+    {% ifequal errored_obj_type "Merch"%}Товара {{errored_obj.name}} (ID:{{errored_obj.id}}){% endifequal %}
+    {% ifequal errored_obj_type "Client"%}Клиента {{errored_obj.name}} (ID:{{errored_obj.id}}){% endifequal %}
+    {% ifequal errored_obj_type "Manufacturer"%}
+    Производителя {{errored_obj.name}} (ID:{{errored_obj.id}})
+    {% endifequal %}
+    {% ifequal errored_obj_type "Order"%}Заказа {{errored_obj.name}} (ID:{{errored_obj.id}}){% endifequal %}
+    {% ifequal errored_obj_type "Supply_order"%}
+    Договора на поставку {{errored_obj.name}} (ID:{{errored_obj.id}})
+    {% endifequal %}
+</h2>
+<span>Следующие записи мешают удалению:</span>
+{% if orders %}
+<h4>Заказы</h4>
+<table class="table table-striped table-hover">
+    <thead>
+    <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Клиент</th>
+        <th scope="col">Товар</th>
+        <th scope="col">Дата заказа</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for order in orders %}
+    <tr onclick="window.location.assign('/order/{{order.id}}');">
+        <td>{{order.id}}</td>
+        <td>{{order.client.name}}</td>
+        <td>{{order.merch.name}}</td>
+        <td>{{order.order_date}}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+{% if order %}
+<h4>Заказ</h4>
+<table class="table table-striped table-hover">
+    <thead>
+    <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Клиент</th>
+        <th scope="col">Товар</th>
+        <th scope="col">Дата заказа</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr onclick="window.location.assign('/order/{{order.id}}');">
+        <td>{{order.id}}</td>
+        <td>{{order.client.name}}</td>
+        <td>{{order.merch.name}}</td>
+        <td>{{order.order_date}}</td>
+    </tr>
+    </tbody>
+</table>
+{% endif %}
+{% if supply_order %}
+<h4>Поставка</h4>
+<table class="table table-striped table-hover">
+    <thead>
+    <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Товар</th>
+        <th scope="col">Поставщик</th>
+        <th scope="col">Дата поставки</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr onclick="window.location.assign('/supply_order/{{supply_order.id}}');">
+        <td>{{supply_order.id}}</td>
+        <td>{{supply_order.merch.name}}</td>
+        <td>{{supply_order.contract.supplier.name}}</td>
+        <td>{{supply_order.delivery_date}}</td>
+    </tr>
+    </tbody>
+</table>
+{% endif %}
+{% if supply_orders %}
+<h4>Поставки</h4>
+<table class="table table-striped table-hover">
+    <thead>
+    <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Товар</th>
+        <th scope="col">Поставщик</th>
+        <th scope="col">Дата поставки</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for supply_order in supply_orders %}
+    <tr onclick="window.location.assign('/supply_order/{{supply_order.id}}');">
+        <td>{{supply_order.id}}</td>
+        <td>{{supply_order.merch.name}}</td>
+        <td>{{supply_order.contract.supplier.name}}</td>
+        <td>{{supply_order.delivery_date}}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+{% if merchandise %}
+<h4>Товары</h4>
+<table class="table table-striped table-hover">
+    <thead>
+    <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Товар</th>
+        <th scope="col">Производитель</th>
+        <th scope="col">Стоимость</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for merch in merchandise %}
+    <tr onclick="window.location.assign('/merchandise_info/{{merch.id}}');">
+        <td>{{merch.id}}</td>
+        <td>{{merch.name}}</td>
+        <td>{{merch.manufacturer.name}}</td>
+        <td>{{merch.price}}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+{% if merch %}
+<h4>Товар</h4>
+<table class="table table-striped table-hover">
+    <thead>
+    <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Товар</th>
+        <th scope="col">Производитель</th>
+        <th scope="col">Стоимость</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr onclick="window.location.assign('/merchandise_info/{{merch.id}}');">
+        <td>{{merch.id}}</td>
+        <td>{{merch.name}}</td>
+        <td>{{merch.manufacturer.name}}</td>
+        <td>{{merch.price}}</td>
+    </tr>
+    </tbody>
+</table>
+{% endif %}
+{% if contracts %}
+<h4>Договоры</h4>
+<table class="table table-striped table-hover">
+    <thead>
+    <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Поставщик</th>
+        <th scope="col">Дата начала</th>
+        <th scope="col">Дата окончания</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for contract in contracts %}
+    <tr onclick="window.location.assign('/contract/{{contract.id}}');">
+        <td>{{contract.id}}</td>
+        <td>{{contract.supplier.name}}</td>
+        <td>{{contract.start_date}}</td>
+        <td>{{contract.conclusion_date}}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+{% if contract %}
+<h4>Договор</h4>
+<table class="table table-striped table-hover">
+    <thead>
+    <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Поставщик</th>
+        <th scope="col">Дата начала</th>
+        <th scope="col">Дата окончания</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr onclick="window.location.assign('/contract/{{contract.id}}');">
+        <td>{{contract.id}}</td>
+        <td>{{contract.supplier.name}}</td>
+        <td>{{contract.start_date}}</td>
+        <td>{{contract.conclusion_date}}</td>
+    </tr>
+    </tbody>
+</table>
+{% endif %}
+{% endblock %}
