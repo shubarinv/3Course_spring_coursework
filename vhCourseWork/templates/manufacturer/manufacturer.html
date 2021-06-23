@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="display-5">Данные по производителю #{{manufacturer.id}}</h1>
+<ul class="list-group row">
+    <li class="list-group-item">Наименование: {{manufacturer.name}}</li>
+    <li class="list-group-item">Директор: {{manufacturer.director}}</li>
+    <li class="list-group-item">Главный бухглатер: {{manufacturer.accountant}}</li>
+    <li class="list-group-item">Телефон: {{manufacturer.phone}}</li>
+    <li class="list-group-item">Факс: {{manufacturer.fax}}</li>
+    <li class="list-group-item">Адрес: {{manufacturer.address}}</li>
+    <li class="list-group-item">Банковские реквизиты: {{manufacturer.bank_details}}</li>
+    <li class="list-group-item">Заметки: {{manufacturer.notes}}</li>
+</ul>
+<button type="button" onclick="window.location.assign('/contracts');" class="btn btn-outline-secondary">Назад</button>
+<button type="button" onclick="window.location.assign('/remove/manufacturer/{{manufacturer.id}}');"
+        class="btn btn-outline-warning">Удалить
+</button>
+<button type="button" onclick="window.location.assign('/edit/manufacturer/{{manufacturer.id}}');"
+        class="btn btn-outline-primary">Отредактировать
+</button>
+{% endblock %}
