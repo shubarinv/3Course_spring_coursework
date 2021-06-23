@@ -14,14 +14,16 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
-    <div class="container">
+    <div class="container-fluid">
         <a class="navbar-brand" href="/">CourseWork</a>
+        {% if user.is_authenticated %}
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
                 aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav">
+            <div class="navbar-nav mr-auto">
+                <a class="nav-link" href="/orders" aria-disabled="true">Заказы</a>
                 <a class="nav-link" href="/clients" aria-disabled="true">Клиенты</a>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
@@ -38,10 +40,18 @@
                 <a class="nav-link " href="/merchandise" aria-disabled="true">Товары</a>
                 <a class="nav-link " href="/storage" aria-disabled="true">Склад</a>
             </div>
+
         </div>
+        {% endif %}
+        {% if user.is_authenticated %}
+        <span class="navbar-text me-2">Пользователь: {{ user.username }} </span>
+        <a href="{% url 'logout' %}" class="nav-link">Выйти</a>
+        {% else %}
+        <a class="nav-link me-2" href="{% url 'login' %}">Войти</a>
+        {% endif %}
     </div>
 </nav>
-<div class="shadow p-3 mb-5 bg-body rounded  justify-content-center container container-sm">
+<div class="shadow p-3 mb-5 bg-body rounded  justify-content-center container container-sm ">
     {% block content %}{% endblock content %}
 </div>
 
