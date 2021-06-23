@@ -1,5 +1,67 @@
 {% extends "base.html" %}
-
-
+{% block head %}
+<script
+        src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+        crossorigin="anonymous"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+{% endblock %}
 {% block content %}
+<h1>Редактирование договора</h1>
+<form method="post">{% csrf_token %}
+    <div class=" mb-3">`
+        <label class="form-label" for="inputSupplierSelect">Поставщик</label>
+        <select class="form-select" id="inputSupplierSelect" name="supplier" required>
+            {% for supplier in suppliers_data %}
+            <option value="{{supplier.id}}" {% ifequal contract_data.supplier.id supplier.id %} selected {% endifequal
+                    %}>
+                {{supplier.name}} (ID: {{supplier.id}})
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-floating">
+        <input type="date" class="form-control" id="floatingContractStartDate" name="contract_start_date"
+               value='{{contract_data.start_date|date:"Y-m-d"}}' required>
+        <label for="floatingContractStartDate">Дата заключения договора</label>
+    </div>
+    <div class="form-floating">
+        <input type="date" class="form-control" id="floatingContractEndDate" name="contract_end_date"
+               value='{{contract_data.conclusion_date|date:"Y-m-d"}}' required>
+        <label for="floatingContractEndDate">Дата окончания договора</label>
+    </div>
+    <div class="form-floating">
+            <textarea class="form-control" maxlength="256" placeholder="Leave a comment here" name="description"
+                      id="description"
+                      style="height: 100px" required>{{contract_data.text}}</textarea>
+        <label for="description">Краткий текст договора</label>
+    </div>
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+</form>
+<script>
+    $(document).ready(function () {
+        $('.form-select').select2();
+    });
+    $(function () {
+        var dtToday = new Date();
+
+        var month = dtToday.getMonth() + 1;
+        var day = dtToday.getDate();
+        var year = dtToday.getFullYear();
+
+        if (month < 10)
+            month = '0' + month.toString();
+        if (day < 10)
+            day = '0' + day.toString();
+
+        $('#floatingContractStartDate').attr('min', year - 1 + '-' + month + '-' + day);
+        $('#floatingContractStartDate').attr('max', year + 1 + '-' + month + '-' + day);
+        $('#floatingContractEndDate').attr('max', year + 10 + '-' + month + '-' + day);
+        $('#floatingContractEndDate').attr('min', year - 1 + '-' + month + '-' + day);
+    });
+    $("#floatingContractStartDate").change(function () {
+        $('#floatingContractEndDate').attr('min', $("#floatingContractStartDate").val());
+    });
+</script>
 {% endblock %}

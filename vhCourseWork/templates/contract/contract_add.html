@@ -27,15 +27,37 @@
         <label for="floatingContractEndDate">Дата окончания договора</label>
     </div>
     <div class="form-floating">
-            <textarea class="form-control" placeholder="Leave a comment here" name="description" id="description"
+            <textarea class="form-control" maxlength="256" placeholder="Leave a comment here" name="description"
+                      id="description"
                       style="height: 100px" required></textarea>
         <label for="description">Краткий текст договора</label>
     </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" class="btn btn-primary">Добавить</button>
 </form>
 <script>
     $(document).ready(function () {
         $('.form-select').select2();
     });
+    $(function () {
+        var dtToday = new Date();
+
+        var month = dtToday.getMonth() + 1;
+        var day = dtToday.getDate();
+        var year = dtToday.getFullYear();
+
+        if (month < 10)
+            month = '0' + month.toString();
+        if (day < 10)
+            day = '0' + day.toString();
+
+        $('#floatingContractStartDate').attr('min', year - 1 + '-' + month + '-' + day);
+        $('#floatingContractStartDate').attr('max', year + 1 + '-' + month + '-' + day);
+        $('#floatingContractEndDate').attr('max', year + 10 + '-' + month + '-' + day);
+        $('#floatingContractEndDate').attr('min', year - 1 + '-' + month + '-' + day);
+    });
+    $("#floatingContractStartDate").change(function () {
+        $('#floatingContractEndDate').attr('min', $("#floatingContractStartDate").val());
+    });
+
 </script>
 {% endblock %}
