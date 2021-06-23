@@ -10,8 +10,8 @@
 {% block content %}
 <form method="post">{% csrf_token %}
     <div class="input-group mb-3" id="client_select">
-        <label class="form-label" for="inputClientSelect">Контракт</label>
-        <select class="form-select" id="inputClientSelect" name="contract_id"
+        <label class="form-label" for="inputContractSelect">Контракт</label>
+        <select class="form-select" id="inputContractSelect" name="contract_id"
                 {% ifequal specific_contract True %} disabled{% endifequal %} required>
             {% ifnotequal specific_contract True %}
             {% for contract in contract_data %}
@@ -28,7 +28,6 @@
     <div class="input-group mb-3">
         <label class="form-label" for="inputMerchSelect">Товар</label>
         <select class="form-select" id="inputMerchSelect" name="merch_id" required>
-            <option selected>Выберите товар</option>
             {% for merch in merch_data %}
             <option value="{{merch.id}}">{{merch.name}} (ID: {{merch.id}})</option>
             {% endfor %}
@@ -43,8 +42,8 @@
         <div class="input-group-prepend">
             <span class="input-group-text">Кол-во</span>
         </div>
-        <input type="text" class="form-control" required aria-label="Кол-во"
-               aria-describedby="amount" id="amount" name="amount" required>
+        <input type="number" class="form-control" required aria-label="Кол-во"
+               aria-describedby="amount" min="0" id="amount" name="amount" required>
     </div>
     <div class="input-group mb-3">
         <div class="input-group-prepend">
@@ -53,9 +52,10 @@
         <input type="text" class="form-control" aria-label="total"
                aria-describedby="total" id="total" name="total" disabled>
     </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" class="btn btn-primary">Сохранить</button>
 </form>
 <script>
+    var merch_price = 0;
     function update_total() {
         var amount = document.getElementById('amount').value;
         document.getElementById('total').value = merch_price * amount + " руб";
@@ -77,11 +77,23 @@
     $(document).ready(function () {
         $('.form-select').select2();
     });
-    $("#amount").keyup(function () {
+    $("#amount").change(function () {
         update_total();
     });
     $("#inputMerchSelect").change(function () {
         update_merch_price();
+    });
+    $("#inputContractSelect").change(function () {
+        $.ajax({
+            url: '/ajax/contract/dates/' + document.getElementById('inputContractSelect').value,
+            data: {},
+            dataType: 'json',
+            success: function (data) {
+                $('#supply_order_delivery_date').attr('min', data.start);
+                $('#supply_order_delivery_date').attr('max', data.end);
+                console.log(data);
+            }
+        });
     });
 </script>
 {% endblock %}

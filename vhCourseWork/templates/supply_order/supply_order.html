@@ -5,6 +5,7 @@
 <ul class="list-group row">
     <li class="list-group-item">Поставщик: {{order_data.contract.supplier.name}}</li>
     <li class="list-group-item">Дата заключения договора c поставщиком: {{order_data.contract.start_date}}</li>
+    <li class="list-group-item">Дата окончания договора c поставщиком: {{order_data.contract.conclusion_date}}</li>
     <li class="list-group-item">Номер договора c поставщиком: {{order_data.contract.id}}</li>
     <li class="list-group-item"><a href="/contract/{{order_data.contract.id}}">
         Договор c поставщиком</a></li>
@@ -20,13 +21,19 @@
         {% ifequal order_data.shipped True %} Поставлен {% endifequal %}
     </li>
 </ul>
+<button type="button" onclick="window.location.assign('/supply_orders');"
+        class="btn btn-outline-primary">К поставкам
+</button>
+<button type="button" onclick="window.location.assign('/supply_orders/{{order_data.contract.id}}');"
+        class="btn btn-outline-primary">К поставкам по договору #{{order_data.contract.id}}
+</button>
+{% ifequal order_data.shipped False %}
 <button type="button" onclick="window.location.assign('/remove/supply_order/{{order_data.id}}');"
         class="btn btn-outline-warning">Удалить
 </button>
 <button type="button" onclick="window.location.assign('/edit/supply_order/{{order_data.id}}');"
         class="btn btn-outline-primary">Отредактировать
 </button>
-{% ifequal order_data.shipped False %}
 <button type="button" onclick="window.location.assign('/supply_order/{{order_data.id}}/received');"
         class="btn btn-outline-primary">Получено
 </button>

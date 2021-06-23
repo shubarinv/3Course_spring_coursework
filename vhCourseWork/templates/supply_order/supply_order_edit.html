@@ -36,7 +36,7 @@
         <div class="input-group-prepend">
             <span class="input-group-text">Кол-во</span>
         </div>
-        <input type="text" class="form-control" required aria-label="Кол-во"
+        <input type="number" min="0" step="1" class="form-control" required aria-label="Кол-во"
                aria-describedby="amount" id="amount" name="amount" value="{{supply_order_data.amount}}">
     </div>
     <div class="input-group mb-3">
@@ -46,7 +46,7 @@
         <input type="text" class="form-control" aria-label="total"
                aria-describedby="total" id="total" name="total" disabled>
     </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" class="btn btn-primary">Сохранить</button>
 </form>
 <script>
     var merch_price = 0;
@@ -72,13 +72,35 @@
     $(document).ready(function () {
         $('.form-select').select2();
         update_merch_price();
+        $.ajax({
+            url: '/ajax/contract/dates/' + document.getElementById('inputContractSelect').value,
+            data: {},
+            dataType: 'json',
+            success: function (data) {
+                $('#supply_order_delivery_date').attr('min', data.start);
+                $('#supply_order_delivery_date').attr('max', data.end);
+                console.log(data);
+            }
+        });
 
     });
-    $("#amount").keyup(function () {
+    $("#amount").change(function () {
         update_total();
     });
     $("#inputMerchSelect").change(function () {
         update_merch_price();
+    });
+    $("#inputContractSelect").change(function () {
+        $.ajax({
+            url: '/ajax/contract/dates/' + document.getElementById('inputContractSelect').value,
+            data: {},
+            dataType: 'json',
+            success: function (data) {
+                $('#supply_order_delivery_date').attr('min', data.start);
+                $('#supply_order_delivery_date').attr('max', data.end);
+                console.log(data);
+            }
+        });
     });
 
 </script>
