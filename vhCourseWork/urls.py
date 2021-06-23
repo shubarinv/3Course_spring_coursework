@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
 from . import views
 
@@ -42,6 +42,8 @@ urlpatterns = [
     path('supply_order/<int:order_id>', views.supply_order, name='Supply order'),
 
     path('supply_order/<int:order_id>/received', views.supply_order_received, name='Supply order received'),
+    path('order/<int:order_id>/paid', views.order_paid, name='Supply order received'),
+    path('order/<int:order_id>/shipped', views.order_shipped, name='Supply order received'),
 
     path('edit/client/<int:client_id>', views.client_edit, name='Client Edit'),
     path('edit/manufacturer/<int:manufacturer_id>', views.manufacturer_edit, name='Manufacturer Edit'),
@@ -75,7 +77,12 @@ urlpatterns = [
     # path('ajax/contract/<int:contract_id>', views.ajax_contract, name='Ajax get contract'),
     path('ajax/merchandise/price/<int:merchandise_id>', views.ajax_merchandise_price,
          name='Ajax get merchandise price'),
+    path('ajax/contract/dates/<int:contract_id>', views.ajax_contact_dates,
+         name='Ajax get merchandise price'),
     #  path('ajax/supplier/<int:supplier_id>', views.ajax_supplier, name='Ajax get supplier'),
     # path('ajax/supply_order/<int:supply_order_id>', views.ajax_supply_order, name='Ajax get supply_order'),
     # path('ajax/stock/<int:stock_id>', views.ajax_stock, name='Ajax get stock'),
+]
+urlpatterns += [
+    path('accounts/', include('django.contrib.auth.urls')),
 ]
