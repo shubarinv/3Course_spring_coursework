@@ -9,10 +9,6 @@
 {% endblock %}
 {% block content %}
 
-<div class=".container-md position-absolute top-50 start-50 translate-middle">
-    <div class="alert alert-danger" role="alert">
-        Redesign required
-    </div>
     <h1>Редактирование товара</h1>
     <form method="post">{% csrf_token %}
         <div class="form-floating mb-3">
@@ -21,7 +17,8 @@
             <label for="merch_name">Наименование товара</label>
         </div>
         <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="merch_price" name="price" value="{{merch_data.price}}"
+            <input type="number" class="form-control" min=0 id="merch_price" name="price"
+                   value="{{merch_data.price}}" max=1000000
                    placeholder=" " required>
             <label for="merch_price">Цена</label>
         </div>
@@ -39,15 +36,15 @@
         </div>
         <div class="form-floating">
             <textarea class="form-control" placeholder="Leave a comment here" name="description" id="description"
-                      style="height: 100px" required>{{merch_data.description}}</textarea>
+                      style="height: 100px" maxlength="1000" required>{{merch_data.description}}</textarea>
             <label for="description">Характеристики</label>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">Сохранить</button>
     </form>
-</div>
 <script>
     $(document).ready(function () {
         $('.form-select').select2();
     });
+    field.setCustomValidity("Invalid field.");
 </script>
 {% endblock %}
