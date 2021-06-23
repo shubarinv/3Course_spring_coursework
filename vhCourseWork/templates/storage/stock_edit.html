@@ -1,9 +1,6 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="alert alert-danger" role="alert">
-    Redesign required
-</div>
 <h2>Редактирование количества товара</h2>
 <form method="post">{% csrf_token %}
     <div class="input-group mb-3">
@@ -13,9 +10,9 @@
                value="{{stock_data.merch.name}} (ID: {{stock_data.merch.id}})"></div>
     <div class="input-group mb-3">
         <span class="input-group-text" id="inputStockAmount">Кол-во</span>
-        <input type="text" class="form-control" name="amount" aria-label="amount"
+        <input type="number" class="form-control" min="0" name="amount" aria-label="amount"
                aria-describedby="inputStockAmount" value="{{stock_data.amount}}" required>
     </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" class="btn btn-primary">Сохранить</button>
 </form>
 {% endblock %}
