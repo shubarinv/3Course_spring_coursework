@@ -4,7 +4,7 @@ from django.db import models
 class Client(models.Model):
     name = models.CharField(max_length=60)
     director = models.CharField(max_length=90)
-    phone = models.CharField(max_length=14)
+    phone = models.CharField(max_length=17)
     bank_details = models.CharField(max_length=250)
     tin = models.CharField(max_length=15)
     address = models.CharField(max_length=150)
@@ -15,8 +15,8 @@ class Manufacturer(models.Model):
     name = models.CharField(max_length=60)
     director = models.CharField(max_length=80)
     accountant = models.CharField(max_length=80, null=True)
-    phone = models.CharField(max_length=14)
-    fax = models.CharField(max_length=14, null=True)
+    phone = models.CharField(max_length=17)
+    fax = models.CharField(max_length=17, null=True)
     tin = models.CharField(max_length=15)
     address = models.CharField(max_length=150)
     bank_details = models.CharField(max_length=250)
@@ -27,7 +27,7 @@ class Merchandise(models.Model):
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=1000)
     price = models.FloatField()
-    manufacturer = models.ForeignKey(Manufacturer, on_delete=models.SET_NULL, null=True)
+    manufacturer = models.ForeignKey(Manufacturer, on_delete=models.RESTRICT, null=True)
 
 
 class Stock(models.Model):
@@ -36,8 +36,8 @@ class Stock(models.Model):
 
 
 class Order(models.Model):
-    client = models.ForeignKey(Client, on_delete=models.SET_NULL, null=True)
-    merch = models.ForeignKey(Merchandise, on_delete=models.SET_NULL, null=True)
+    client = models.ForeignKey(Client, on_delete=models.RESTRICT, null=True)
+    merch = models.ForeignKey(Merchandise, on_delete=models.RESTRICT, null=True)
     amount = models.IntegerField()
     paid = models.BooleanField()
     total = models.FloatField()
@@ -54,8 +54,8 @@ class Supplier(models.Model):
     name = models.CharField(max_length=80)
     director = models.CharField(max_length=80)
     accountant = models.CharField(max_length=80, null=True)
-    phone = models.CharField(max_length=14)
-    fax = models.CharField(max_length=14, null=True)
+    phone = models.CharField(max_length=17)
+    fax = models.CharField(max_length=17, null=True)
     tin = models.CharField(max_length=15)
     address = models.CharField(max_length=150)
     bank_details = models.CharField(max_length=250)
@@ -63,15 +63,15 @@ class Supplier(models.Model):
 
 
 class Contract(models.Model):
-    supplier = models.ForeignKey(Supplier, on_delete=models.SET_NULL, null=True)
+    supplier = models.ForeignKey(Supplier, on_delete=models.RESTRICT, null=True)
     text = models.TextField()
     start_date = models.DateField()
     conclusion_date = models.DateField()
 
 
 class SupplyOrder(models.Model):
-    merch = models.ForeignKey(Merchandise, on_delete=models.SET_NULL, null=True)
-    contract = models.ForeignKey(Contract, on_delete=models.SET_NULL, null=True)
+    merch = models.ForeignKey(Merchandise, on_delete=models.RESTRICT, null=True)
+    contract = models.ForeignKey(Contract, on_delete=models.RESTRICT, null=True)
     amount = models.IntegerField()
     price = models.FloatField()
     shipped = models.BooleanField()

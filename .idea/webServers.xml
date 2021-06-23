@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="25bcc759-86b3-4883-ab40-c720168d718c" name="vh_server_local">
+        <fileTransfer rootFolder="/home/vhundef/courseWork" accessType="SFTP" host="192.168.0.171" port="22" sshConfigId="a95cf478-73fd-4e0a-b24f-5ed3b79f87b0" sshConfig="vhundef@192.168.0.171:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
