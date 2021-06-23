@@ -3,37 +3,72 @@
 {% block content %}
 
 {% if client %}
-<h3>ID: {{ client.id }}</h3>
-<h3>Наименование: {{ client.name }}</h3>
-<h3>Директор: {{ client.director }}</h3>
-<h3>Адрес: {{ client.address }}</h3>
-<h3>Телефон: {{ client.phone }}</h3>
-<h3>ИНН: {{ client.tin }}</h3>
-<h3>Банковские данные: {{ client.bank_details }}</h3>
-<h3>Заметки: {{ client.notes }}</h3>
+<ul class="list-group row">>
+    <li class="list-group-item">ID: {{ client.id }}</li>
+    <li class="list-group-item">Наименование: {{ client.name }}</li>
+    <li class="list-group-item">Директор: {{ client.director }}</li>
+    <li class="list-group-item">Адрес: {{ client.address }}</li>
+    <li class="list-group-item">Телефон: {{ client.phone }}</li>
+    <li class="list-group-item">ИНН: {{ client.tin }}</li>
+    <li class="list-group-item">Банковские данные: {{ client.bank_details }}</li>
+    <li class="list-group-item">Заметки: {{ client.notes }}</li>
+</ul>
+<button type="button" onclick="window.location.assign('/clients');" class="btn btn-outline-secondary">К списку
+    клиентов
+</button>
+<button type="button" onclick="window.location.assign('/remove/client/{{client_data.id}}');"
+        class="btn btn-outline-warning">Удалить
+</button>
+<button type="button" onclick="window.location.assign('/edit/client/{{client_data.id}}');"
+        class="btn btn-outline-primary">Отредактировать
+</button>
 {% elif manufacturer %}
-<h3>ID: {{ manufacturer.id }}</h3>
-<h3>Наименование: {{ manufacturer.name }}</h3>
-<h3>Директор: {{ manufacturer.director }}</h3>
-<h3>Главный бухгалтер: {{ manufacturer.accountant }}</h3>
-<h3>Адрес: {{ manufacturer.address }}</h3>
-<h3>Телефон: {{ manufacturer.phone }}</h3>
-<h3>Факс: {{ manufacturer.fax }}</h3>
-<h3>ИНН: {{ manufacturer.tin }}</h3>
-<h3>Банковские данные: {{ manufacturer.bank_details }}</h3>
-<h3>Заметки: {{ manufacturer.notes }}</h3>
+<h1>Данные по производителю {{manufacturer.name}}(ID:{{manufacturer.id}})</h1>
+<ul>
+    <li class="list-group-item">ID: {{ manufacturer.id }}</li>
+    <li class="list-group-item">Наименование: {{ manufacturer.name }}</li>
+    <li class="list-group-item">Директор: {{ manufacturer.director }}</li>
+    <li class="list-group-item">Главный бухгалтер: {{ manufacturer.accountant }}</li>
+    <li class="list-group-item">Адрес: {{ manufacturer.address }}</li>
+    <li class="list-group-item">Телефон: {{ manufacturer.phone }}</li>
+    <li class="list-group-item">Факс: {{ manufacturer.fax }}</li>
+    <li class="list-group-item">ИНН: {{ manufacturer.tin }}</li>
+    <li class="list-group-item">Банковские данные: {{ manufacturer.bank_details }}</li>
+    <li class="list-group-item">Заметки: {{ manufacturer.notes }}</li>
+</ul>
+<button type="button" onclick="window.location.assign('/manufacturers');" class="btn btn-outline-secondary">К списку
+    производителей
+</button>
+<button type="button" onclick="window.location.assign('/remove/manufacturer/{{manufacturer_data.id}}');"
+        class="btn btn-outline-warning">Удалить
+</button>
+<button type="button" onclick="window.location.assign('/edit/manufacturer/{{manufacturer_data.id}}');"
+        class="btn btn-outline-primary">Отредактировать
+</button>
 {% elif supplier %}
-<h3>ID: {{ supplier.id }}</h3>
-<h3>Наименование: {{ supplier.name }}</h3>
-<h3>Директор: {{ supplier.director }}</h3>
-<h3>Главный бухгалтер:: {{ supplier.accountant }}</h3>
-<h3>Адрес: {{ supplier.address }}</h3>
-<h3>Телефон: {{ supplier.phone }}</h3>
-<h3>Факс: {{ supplier.fax }}</h3>
-<h3>ИНН: {{ supplier.tin }}</h3>
-<h3>Банковские данные: {{ supplier.bank_details }}</h3>
-<h3>Заметки: {{ supplier.notes }}</h3>
+<h1>Данные по поставщику {{supplier.name}}(ID:{{supplier.id}})</h1>
+<ul>
+    <li class="list-group-item">ID: {{ supplier.id }}</li>
+    <li class="list-group-item">Наименование: {{ supplier.name }}</li>
+    <li class="list-group-item">Директор: {{ supplier.director }}</li>
+    <li class="list-group-item">Главный бухгалтер:: {{ supplier.accountant }}</li>
+    <li class="list-group-item">Адрес: {{ supplier.address }}</li>
+    <li class="list-group-item">Телефон: {{ supplier.phone }}</li>
+    <li class="list-group-item">Факс: {{ supplier.fax }}</li>
+    <li class="list-group-item">ИНН: {{ supplier.tin }}</li>
+    <li class="list-group-item">Банковские данные: {{ supplier.bank_details }}</li>
+    <li class="list-group-item">Заметки: {{ supplier.notes }}</li>
+</ul>
+<button type="button" onclick="window.location.assign('/suppliers');" class="btn btn-outline-secondary">К списку
+    поставщиков
+</button>
+<button type="button" onclick="window.location.assign('/remove/supplier/{{supplier.id}}');"
+        class="btn btn-outline-warning">Удалить
+</button>
+<button type="button" onclick="window.location.assign('/edit/supplier/{{supplier.id}}');"
+        class="btn btn-outline-primary">Отредактировать
+</button>
 {% else %}
-<h3>Хто я?</h3>
+<li class="list-group-item">Хто я?</li>
 {% endif %}
 {% endblock %}

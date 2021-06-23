@@ -1,9 +1,6 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="alert alert-danger" role="alert">
-    Redesign required
-</div>
 {% ifequal  org_type "client" %}
 <h1>Клиенты</h1>
 <a href="/add/client" class="btn btn-primary  btn-sm">Добавить клиента</a>

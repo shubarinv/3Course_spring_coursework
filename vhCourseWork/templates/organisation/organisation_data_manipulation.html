@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
+
 {% ifequal  org_type "client" %}
 <h1> {% if org_data %}Редактирование данных{% else %}Добавление{% endif %} клиента</h1>
 {% endifequal %}
@@ -13,14 +14,14 @@
 <form method="post">{% csrf_token %}
     <div class="form-group">
         <label class="form-label" for="name">Наименование</label>
-        <input class="form-control" id="name" name="name" type="text" required
+        <input class="form-control" maxlength="60" id="name" name="name" type="text" required
                {% if org_data %}
                value="{{org_data.name}}"
                {% endif %}>
     </div>
     <div class="form-group">
         <label class="form-label" for="director">Директор</label>
-        <input class="form-control" id="director" name="director" type="text" required
+        <input class="form-control" maxlength="90" id="director" name="director" type="text" required
                {% if org_data %}
                value="{{org_data.director}}"
                {% endif %}>
@@ -28,7 +29,7 @@
     {% ifnotequal org_type "client" %}
     <div class="form-group">
         <label class="form-label" for="accountant">Главный бухгалтер</label>
-        <input class="form-control" id="accountant" name="accountant" type="text"
+        <input class="form-control" maxlength="90" id="accountant" name="accountant" type="text"
                {% if org_data %}
                value="{{org_data.accountant}}"
                {% endif %}>
@@ -36,14 +37,16 @@
     {% endifnotequal %}
     <div class="form-group">
         <label class="form-label" for="address">Адрес</label>
-        <input class="form-control" id="address" name="address" type="text" required
+        <input class="form-control" maxlength="150" id="address" name="address" type="text" required
                {% if org_data %}
                value="{{org_data.address}}"
                {% endif %}>
     </div>
     <div class="form-group">
         <label class="form-label" for="phone">Телефон</label>
-        <input class="form-control" id="phone" name="phone" type="text" required
+        <input class="form-control" id="phone" name="phone" type="text" minlength="17" placeholder="+_ (___) ___-____"
+               data-slots="_"
+               required
                {% if org_data %}
                value="{{org_data.phone}}"
                {% endif %}>
@@ -51,7 +54,8 @@
     {% ifnotequal org_type "client" %}
     <div class="form-group">
         <label class="form-label" for="fax">Факс</label>
-        <input class="form-control" id="fax" name="fax" type="text"
+        <input class="form-control" id="fax" name="fax" type="text" minlength="17" placeholder="+_ (___) ___-____"
+               data-slots="_"
                {% if org_data %}
                value="{{org_data.fax}}"
                {% endif %}>
@@ -59,21 +63,53 @@
     {% endifnotequal %}
     <div class="form-group">
         <label class="form-label" for="tin">Инн</label>
-        <input class="form-control" id="tin" name="tin" type="text" required
+        <input class="form-control" id="tin" name="tin" type="text" minlength="12" placeholder="____________"
+               data-slots="_"
                {% if org_data %}
                value="{{org_data.tin}}"
                {% endif %}>
     </div>
     <div class="form-group">
         <label class="form-label" for="bank_details">Банковские данные</label>
-        <textarea class="form-control" id="bank_details" name="bank_details" rows="5" required>
+        <textarea class="form-control" id="bank_details" maxlength="250" name="bank_details" rows="5" required>
 {% if org_data %}{{org_data.bank_details}}{% endif %}</textarea>
     </div>
     <div class="form-group">
         <label class="form-label" for="notes">Заметки</label>
-        <textarea class="form-control" id="notes" name="notes"
+        <textarea class="form-control" id="notes" name="notes" maxlength="255"
                   rows="5">{% if org_data %}{{org_data.notes}}{% endif %}</textarea>
     </div>
-    <button class="btn btn-primary" type="submit">Submit</button>
+    <button class="btn btn-primary" type="submit">Сохранить</button>
 </form>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        for (const el of document.querySelectorAll("[placeholder][data-slots]")) {
+            const pattern = el.getAttribute("placeholder"),
+                slots = new Set(el.dataset.slots || "_"),
+                prev = (j => Array.from(pattern, (c, i) => slots.has(c) ? j = i + 1 : j))(0),
+                first = [...pattern].findIndex(c => slots.has(c)),
+                accept = new RegExp(el.dataset.accept || "\\d", "g"),
+                clean = input => {
+                    input = input.match(accept) || [];
+                    return Array.from(pattern, c =>
+                        input[0] === c || slots.has(c) ? input.shift() || c : c
+                    );
+                },
+                format = () => {
+                    const [i, j] = [el.selectionStart, el.selectionEnd].map(i => {
+                        i = clean(el.value.slice(0, i)).findIndex(c => slots.has(c));
+                        return i < 0 ? prev[prev.length - 1] : back ? prev[i - 1] || first : i;
+                    });
+                    el.value = clean(el.value).join``;
+                    el.setSelectionRange(i, j);
+                    back = false;
+                };
+            let back = false;
+            el.addEventListener("keydown", (e) => back = e.key === "Backspace");
+            el.addEventListener("input", format);
+            el.addEventListener("focus", format);
+            el.addEventListener("blur", () => el.value === pattern && (el.value = ""));
+        }
+    });
+</script>
 {% endblock %}
